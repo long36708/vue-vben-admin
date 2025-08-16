@@ -279,22 +279,24 @@ const [Form, formApi] = useVbenForm({
 
 useVbenForm 返回的第二个参数，是一个对象，包含了一些表单的方法。
 
-| 方法名 | 描述 | 类型 |
-| --- | --- | --- |
-| submitForm | 提交表单 | `(e:Event)=>Promise<Record<string,any>>` |
-| validateAndSubmitForm | 提交并校验表单 | `(e:Event)=>Promise<Record<string,any>>` |
-| resetForm | 重置表单 | `()=>Promise<void>` |
-| setValues | 设置表单值, 默认会过滤不在schema中定义的field, 可通过filterFields形参关闭过滤 | `(fields: Record<string, any>, filterFields?: boolean, shouldValidate?: boolean) => Promise<void>` |
-| getValues | 获取表单值 | `(fields:Record<string, any>,shouldValidate: boolean = false)=>Promise<void>` |
-| validate | 表单校验 | `()=>Promise<void>` |
-| validateField | 校验指定字段 | `(fieldName: string)=>Promise<ValidationResult<unknown>>` |
-| isFieldValid | 检查某个字段是否已通过校验 | `(fieldName: string)=>Promise<boolean>` |
-| resetValidate | 重置表单校验 | `()=>Promise<void>` |
-| updateSchema | 更新formSchema | `(schema:FormSchema[])=>void` |
-| setFieldValue | 设置字段值 | `(field: string, value: any, shouldValidate?: boolean)=>Promise<void>` |
-| setState | 设置组件状态（props） | `(stateOrFn:\| ((prev: VbenFormProps) => Partial<VbenFormProps>)\| Partial<VbenFormProps>)=>Promise<void>` |
-| getState | 获取组件状态（props） | `()=>Promise<VbenFormProps>` |
-| form | 表单对象实例，可以操作表单，见 [useForm](https://vee-validate.logaretm.com/v4/api/use-form/) | - |
+| 方法名 | 描述 | 类型 | 版本号 |
+| --- | --- | --- | --- |
+| submitForm | 提交表单 | `(e:Event)=>Promise<Record<string,any>>` | - |
+| validateAndSubmitForm | 提交并校验表单 | `(e:Event)=>Promise<Record<string,any>>` | - |
+| resetForm | 重置表单 | `()=>Promise<void>` | - |
+| setValues | 设置表单值, 默认会过滤不在schema中定义的field, 可通过filterFields形参关闭过滤 | `(fields: Record<string, any>, filterFields?: boolean, shouldValidate?: boolean) => Promise<void>` | - |
+| getValues | 获取表单值 | `(fields:Record<string, any>,shouldValidate: boolean = false)=>Promise<void>` | - |
+| validate | 表单校验 | `()=>Promise<void>` | - |
+| validateField | 校验指定字段 | `(fieldName: string)=>Promise<ValidationResult<unknown>>` | - |
+| isFieldValid | 检查某个字段是否已通过校验 | `(fieldName: string)=>Promise<boolean>` | - |
+| resetValidate | 重置表单校验 | `()=>Promise<void>` | - |
+| updateSchema | 更新formSchema | `(schema:FormSchema[])=>void` | - |
+| setFieldValue | 设置字段值 | `(field: string, value: any, shouldValidate?: boolean)=>Promise<void>` | - |
+| setState | 设置组件状态（props） | `(stateOrFn:\| ((prev: VbenFormProps) => Partial<VbenFormProps>)\| Partial<VbenFormProps>)=>Promise<void>` | - |
+| getState | 获取组件状态（props） | `()=>Promise<VbenFormProps>` | - |
+| form | 表单对象实例，可以操作表单，见 [useForm](https://vee-validate.logaretm.com/v4/api/use-form/) | - | - |
+| getFieldComponentRef | 获取指定字段的组件实例 | `<T=unknown>(fieldName: string)=>T` | >5.5.3 |
+| getFocusedField | 获取当前已获得焦点的字段 | `()=>string\|undefined` | >5.5.3 |
 
 ## Props
 
@@ -306,9 +308,11 @@ useVbenForm 返回的第二个参数，是一个对象，包含了一些表单�
 | showCollapseButton | 是否显示折叠按钮 | `boolean` | `false` |
 | wrapperClass | 表单的布局，基于tailwindcss | `any` | - |
 | actionWrapperClass | 表单操作区域class | `any` | - |
+| actionLayout | 表单操作按钮位置 | `'newLine' \| 'rowEnd' \| 'inline'` | `rowEnd` |
+| actionPosition | 表单操作按钮对齐方式 | `'left' \| 'center' \| 'right'` | `right` |
 | handleReset | 表单重置回调 | `(values: Record<string, any>,) => Promise<void> \| void` | - |
 | handleSubmit | 表单提交回调 | `(values: Record<string, any>,) => Promise<void> \| void` | - |
-| handleValuesChange | 表单值变化回调 | `(values: Record<string, any>,) => void` | - |
+| handleValuesChange | 表单值变化回调 | `(values: Record<string, any>, fieldsChanged: string[]) => void` | - |
 | actionButtonsReverse | 调换操作按钮位置 | `boolean` | `false` |
 | resetButtonOptions | 重置按钮组件参数 | `ActionButtonOptions` | - |
 | submitButtonOptions | 提交按钮组件参数 | `ActionButtonOptions` | - |
@@ -316,11 +320,19 @@ useVbenForm 返回的第二个参数，是一个对象，包含了一些表单�
 | collapsed | 是否折叠，在`showCollapseButton`为`true`时生效 | `boolean` | `false` |
 | collapseTriggerResize | 折叠时，触发`resize`事件 | `boolean` | `false` |
 | collapsedRows | 折叠时保持的行数 | `number` | `1` |
-| fieldMappingTime | 用于将表单内的数组值值映射成 2 个字段 | `[string, [string, string],Nullable<string>\|[string,string]\|((any,string)=>any)?][]` | - |
+| fieldMappingTime | 用于将表单内的数组值映射成 2 个字段 | `[string, [string, string],Nullable<string>\|[string,string]\|((any,string)=>any)?][]` | - |
 | commonConfig | 表单项的通用配置，每个配置都会传递到每个表单项，表单项可覆盖 | `FormCommonConfig` | - |
 | schema | 表单项的每一项配置 | `FormSchema[]` | - |
 | submitOnEnter | 按下回车健时提交表单 | `boolean` | false |
 | submitOnChange | 字段值改变时提交表单(内部防抖，这个属性一般用于表格的搜索表单) | `boolean` | false |
+| compact | 是否紧凑模式(忽略为校验信息所预留的空间) | `boolean` | false |
+| scrollToFirstError | 表单验证失败时是否自动滚动到第一个错误字段 | `boolean` | false |
+
+::: tip handleValuesChange
+
+`handleValuesChange` 回调函数的第一个参数`values`装载了表单改变后的当前值对象，第二个参数`fieldsChanged`是一个数组，包含了所有被改变的字段名。注意：第二个参数仅在v5.5.4(不含)以上版本可用，并且传递的是已在schema中定义的字段名。如果你使用了字段映射并且需要检查是哪些字段发生了变化的话，请注意该参数并不会包含映射后的字段名。
+
+:::
 
 ::: tip fieldMappingTime
 
@@ -364,13 +376,6 @@ export interface FormCommonConfig {
    */
   componentProps?: ComponentProps;
   /**
-   * 是否紧凑模式(移除表单底部为显示校验错误信息所预留的空间)。
-   * 在有设置校验规则的场景下，建议不要将其设置为true
-   * 默认为false。但用作表格的搜索表单时，默认为true
-   * @default false
-   */
-  compact?: boolean;
-  /**
    * 所有表单项的控件样式
    */
   controlClass?: string;
@@ -392,7 +397,7 @@ export interface FormCommonConfig {
    * 所有表单项的栅格布局
    * @default ""
    */
-  formItemClass?: string;
+  formItemClass?: (() => string) | string;
   /**
    * 隐藏所有表单项label
    * @default false
